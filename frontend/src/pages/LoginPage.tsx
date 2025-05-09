@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Input from '../components/input/Input';
 
 const LoginPage = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        navigate('/home');
     }
 
     return (
@@ -31,6 +34,7 @@ const LoginPage = () => {
                         onChange={e => setPassword(e.target.value)}
                         className="user-info-input"
                     />
+                    <button type="submit">Log in</button>
                 </form>
             </div>
             <div className="login-footer">

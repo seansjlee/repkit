@@ -9,6 +9,8 @@
 .login-wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 40px;
   width: 400px;
 
@@ -36,6 +38,15 @@
       flex-direction: column;
       align-items: center;
       gap: 10px;
+
+      // temporary
+      button {
+        width: 300px;
+        height: 50px;
+        border-radius: 6px;
+        border: 1px solid black;
+        padding: 0px 10px;
+      }
     }
   }
 
@@ -46,6 +57,7 @@
 
 // Input styles
 .user-info-input {
+  box-sizing: border-box;
   width: 300px;
   height: 50px;
   border-radius: 6px;
@@ -53,4 +65,12 @@
   padding: 0px 10px;
 
   font-size: 15px;
+}
+
+// Main page styles
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
