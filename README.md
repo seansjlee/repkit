@@ -1,2 +1,2 @@
 # Repkit
-Full stack Workout-tracker web application
+A full-stack Workout tracker web application
