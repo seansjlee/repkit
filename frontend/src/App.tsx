@@ -4,7 +4,6 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import './App.scss';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 

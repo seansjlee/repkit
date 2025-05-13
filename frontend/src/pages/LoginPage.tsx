@@ -13,12 +13,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden bg-blue-50">
-      <div className="p-8 bg-white rounded-lg shadow-lg ">
+    <div className="flex items-center justify-center min-h-screen overflow-x-hidden bg-blue-50">
+      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-3xl">
         <div className="mb-6 text-center">
           <p className="text-4xl font-bold text-gray-800">Repkit</p>
           <p className="mt-2 text-xl text-gray-600">
-            Design your workout toolkit.
+            your reps, your kit, your way.
           </p>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

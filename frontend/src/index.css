@@ -2,9 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-#root {
-  height: 100%;
-  width: 100%;
-}
+@import './styles/base.scss';
+@import './styles/compnents.scss';
