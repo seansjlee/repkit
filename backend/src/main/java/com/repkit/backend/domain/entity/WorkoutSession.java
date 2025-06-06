@@ -1,4 +1,4 @@
-package com.repkit.backend.domain.entities;
+package com.repkit.backend.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
