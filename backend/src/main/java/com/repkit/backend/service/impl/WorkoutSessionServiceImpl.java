@@ -17,7 +17,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
     }
 
     @Override
-    public List<WorkoutSession> listWorkoutSessions() {
+    public List<WorkoutSession> getAllWorkoutSessions() {
         return workoutSessionRepository.findAll();
     }
 }

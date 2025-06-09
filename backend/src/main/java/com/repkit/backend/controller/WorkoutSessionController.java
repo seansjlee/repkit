@@ -22,8 +22,8 @@ public class WorkoutSessionController {
     }
 
     @GetMapping
-    public List<WorkoutSessionDto> listWorkoutSessions() {
-        return workoutSessionService.listWorkoutSessions()
+    public List<WorkoutSessionDto> getWorkoutSessions() {
+        return workoutSessionService.getAllWorkoutSessions()
                 .stream()
                 .map(workoutSessionMapper::toDto)
                 .toList();

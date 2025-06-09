@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface WorkoutSessionService {
 
-    List<WorkoutSession> listWorkoutSessions();
+    List<WorkoutSession> getAllWorkoutSessions();
 }
