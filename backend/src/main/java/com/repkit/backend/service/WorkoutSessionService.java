@@ -1,10 +1,11 @@
 package com.repkit.backend.service;
 
-import com.repkit.backend.domain.entity.WorkoutSession;
+import com.repkit.backend.dto.WorkoutSessionDto;
 
 import java.util.List;
 
 public interface WorkoutSessionService {
 
-    List<WorkoutSession> getAllWorkoutSessions();
+    List<WorkoutSessionDto> getAllWorkoutSessions();
+    WorkoutSessionDto createWorkoutSession(WorkoutSessionDto workoutSessionDto);
 }
