@@ -27,3 +27,8 @@ export const updateWorkoutSession = async (
   });
   return response.data;
 };
+
+export const deleteWorkoutSession = async (sessionId: string) => {
+  const response = await axios.delete(`/api/workout-sessions/${sessionId}`);
+  return response.data;
+};

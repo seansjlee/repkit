@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   createWorkoutSession,
+  deleteWorkoutSession,
   getWorkoutSession,
   updateWorkoutSession,
 } from '../api/workoutSessionApi';
@@ -62,6 +63,25 @@ const WorkoutSessionFormPage: React.FC = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!sessionId) return;
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this workout session?',
+    );
+    if (!confirmDelete) return;
+
+    setSubmitting(true);
+
+    try {
+      await deleteWorkoutSession(sessionId);
+      navigate('/');
+    } catch (error) {
+      setError('Failed to delete workout session.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (loading) {
     return <p className="mt-10 text-center text-gray-500">Loading...</p>;
   }
@@ -99,19 +119,31 @@ const WorkoutSessionFormPage: React.FC = () => {
 
           {error && <p className="text-sm text-red-500">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            {submitting
-              ? isUpdate
-                ? 'Updating...'
-                : 'Creating...'
-              : isUpdate
-                ? 'Update'
-                : 'Create'}
-          </button>
+          <div className="space-y-2">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700 disabled:opacity-50"
+            >
+              {submitting
+                ? isUpdate
+                  ? 'Updating...'
+                  : 'Creating...'
+                : isUpdate
+                  ? 'Update'
+                  : 'Create'}
+            </button>
+            {isUpdate && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={submitting}
+                className="w-full px-4 py-2 font-semibold text-red-600 border border-red-600 rounded shadow-md hover:bg-red-50 disabled:opacity-50"
+              >
+                {submitting ? 'Deleting...' : 'Delete'}
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </main>
