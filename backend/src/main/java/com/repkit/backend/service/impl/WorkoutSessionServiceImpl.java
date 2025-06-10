@@ -6,6 +6,7 @@ import com.repkit.backend.dto.WorkoutSessionDto;
 import com.repkit.backend.mapper.WorkoutSessionMapper;
 import com.repkit.backend.service.WorkoutSessionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +54,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
         return workoutSessionMapper.toDto(workoutSessionRepository.findById(id).orElse(null));
     }
 
+    @Transactional
     @Override
     public WorkoutSessionDto updateWorkoutSession(UUID id, WorkoutSessionDto workoutSessionDto) {
         if (null == workoutSessionDto.id()) {
@@ -71,5 +73,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
         workoutSession.setName(workoutSessionDto.name());
 
         return workoutSessionMapper.toDto(workoutSessionRepository.save(workoutSession));
+    }
+
+    @Override
+    public void deleteWorkoutSession(UUID id) {
+        workoutSessionRepository.deleteById(id);
     }
 }

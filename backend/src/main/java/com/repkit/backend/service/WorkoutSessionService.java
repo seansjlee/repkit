@@ -11,4 +11,5 @@ public interface WorkoutSessionService {
     WorkoutSessionDto createWorkoutSession(WorkoutSessionDto workoutSessionDto);
     WorkoutSessionDto getWorkoutSession(UUID id);
     WorkoutSessionDto updateWorkoutSession(UUID id, WorkoutSessionDto workoutSessionDto);
+    void deleteWorkoutSession(UUID id);
 }
