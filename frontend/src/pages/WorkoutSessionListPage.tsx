@@ -9,17 +9,18 @@ const WorkoutSessionListPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSessions = async () => {
       try {
         const data = await getWorkoutSessions();
         setSessions(data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching workout sessions:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
+    fetchSessions();
   }, []);
 
   return (

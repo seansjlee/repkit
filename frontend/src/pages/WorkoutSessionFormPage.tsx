@@ -1,12 +1,41 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createWorkoutSession } from '../api/workoutSessionApi';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  createWorkoutSession,
+  getWorkoutSession,
+  updateWorkoutSession,
+} from '../api/workoutSessionApi';
+import { ArrowLeft } from 'lucide-react';
 
 const WorkoutSessionFormPage: React.FC = () => {
   const navigate = useNavigate();
+  const { sessionId } = useParams();
+
   const [sessionName, setSessionName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (sessionId) {
+      setIsUpdate(true);
+      setLoading(true);
+
+      const fetchData = async () => {
+        try {
+          const session = await getWorkoutSession(sessionId);
+          setSessionName(session.name);
+        } catch (error) {
+          setError('Failed to load session.');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [sessionId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,8 +43,18 @@ const WorkoutSessionFormPage: React.FC = () => {
     setSubmitting(true);
 
     try {
-      await createWorkoutSession(sessionName);
-      navigate('/workout-sessions');
+      if (isUpdate) {
+        if (!sessionId) {
+          setError('Session ID is missing. Cannot update workout session.');
+          return;
+        }
+
+        await updateWorkoutSession(sessionId, sessionName);
+        navigate(`/workout-sessions/${sessionId}`);
+      } else {
+        await createWorkoutSession(sessionName);
+        navigate('/');
+      }
     } catch (error) {
       setError('Failed to create workout session. Please try again.');
     } finally {
@@ -23,12 +62,25 @@ const WorkoutSessionFormPage: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return <p className="mt-10 text-center text-gray-500">Loading...</p>;
+  }
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="w-full max-w-md">
-        <h1 className="mb-6 text-3xl font-bold text-center">
-          Create Workout Session
-        </h1>
+        <div className="flex items-center mb-6">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex items-center justify-center w-12 border border-gray-300 rounded-md h-9 hover:bg-gray-100"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-800" />
+          </button>
+          <h1 className="ml-6 text-3xl font-bold">
+            {isUpdate ? 'Update Workout Session' : 'Create Workout Session'}
+          </h1>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -52,7 +104,13 @@ const WorkoutSessionFormPage: React.FC = () => {
             disabled={submitting}
             className="w-full px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700 disabled:opacity-50"
           >
-            {submitting ? 'Creating...' : 'Create'}
+            {submitting
+              ? isUpdate
+                ? 'Updating...'
+                : 'Creating...'
+              : isUpdate
+                ? 'Update'
+                : 'Create'}
           </button>
         </form>
       </div>
