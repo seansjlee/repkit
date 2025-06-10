@@ -8,6 +8,7 @@ import com.repkit.backend.service.WorkoutSessionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -50,5 +51,25 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
     @Override
     public WorkoutSessionDto getWorkoutSession(UUID id) {
         return workoutSessionMapper.toDto(workoutSessionRepository.findById(id).orElse(null));
+    }
+
+    @Override
+    public WorkoutSessionDto updateWorkoutSession(UUID id, WorkoutSessionDto workoutSessionDto) {
+        if (null == workoutSessionDto.id()) {
+            throw new IllegalArgumentException("Workout session id must be present!");
+        }
+        if (null == workoutSessionDto.name() || workoutSessionDto.name().isBlank()) {
+            throw new IllegalArgumentException("Workout session name cannot be empty!");
+        }
+        if (!Objects.equals(workoutSessionDto.id(), id)) {
+            throw new IllegalArgumentException("Attempting to change workout session ID, this is not permitted");
+        }
+
+        WorkoutSession workoutSession = workoutSessionRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Workout session not found"));
+
+        workoutSession.setName(workoutSessionDto.name());
+
+        return workoutSessionMapper.toDto(workoutSessionRepository.save(workoutSession));
     }
 }

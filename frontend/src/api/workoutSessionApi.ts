@@ -16,3 +16,14 @@ export const getWorkoutSession = async (sessionId: string) => {
   const response = await axios.get(`/api/workout-sessions/${sessionId}`);
   return response.data;
 };
+
+export const updateWorkoutSession = async (
+  sessionId: string,
+  sessionName: string,
+) => {
+  const response = await axios.put(`/api/workout-sessions/${sessionId}`, {
+    id: sessionId,
+    name: sessionName,
+  });
+  return response.data;
+};

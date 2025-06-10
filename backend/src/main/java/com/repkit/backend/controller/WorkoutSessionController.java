@@ -31,4 +31,12 @@ public class WorkoutSessionController {
     public WorkoutSessionDto createWorkoutSession(@RequestBody WorkoutSessionDto workoutSessionDto) {
         return workoutSessionService.createWorkoutSession(workoutSessionDto);
     }
+
+    @PutMapping("/{session_id}")
+    public WorkoutSessionDto updateWorkoutSession(
+            @PathVariable("session_id") UUID sessionId,
+            @RequestBody WorkoutSessionDto workoutSessionDto
+    ) {
+        return workoutSessionService.updateWorkoutSession(sessionId, workoutSessionDto);
+    }
 }
