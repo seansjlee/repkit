@@ -11,3 +11,8 @@ export const createWorkoutSession = async (sessionName: string) => {
   });
   return response.data;
 };
+
+export const getWorkoutSession = async (sessionId: string) => {
+  const response = await axios.get(`/api/workout-sessions/${sessionId}`);
+  return response.data;
+};

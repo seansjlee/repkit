@@ -8,6 +8,7 @@ import com.repkit.backend.service.WorkoutSessionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class WorkoutSessionServiceImpl implements WorkoutSessionService {
@@ -44,5 +45,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
         ));
 
         return workoutSessionMapper.toDto(createdWorkoutSession);
+    }
+
+    @Override
+    public WorkoutSessionDto getWorkoutSession(UUID id) {
+        return workoutSessionMapper.toDto(workoutSessionRepository.findById(id).orElse(null));
     }
 }

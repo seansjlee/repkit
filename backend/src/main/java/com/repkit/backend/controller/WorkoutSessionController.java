@@ -5,6 +5,7 @@ import com.repkit.backend.service.WorkoutSessionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/workout-sessions")
@@ -19,6 +20,11 @@ public class WorkoutSessionController {
     @GetMapping
     public List<WorkoutSessionDto> getWorkoutSessions() {
         return workoutSessionService.getAllWorkoutSessions();
+    }
+
+    @GetMapping("/{session_id}")
+    public WorkoutSessionDto getWorkoutSession(@PathVariable("session_id") UUID sessionId) {
+        return workoutSessionService.getWorkoutSession(sessionId);
     }
 
     @PostMapping
