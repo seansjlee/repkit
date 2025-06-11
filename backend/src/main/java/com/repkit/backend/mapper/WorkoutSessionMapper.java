@@ -6,6 +6,5 @@ import com.repkit.backend.dto.WorkoutSessionDto;
 public interface WorkoutSessionMapper {
 
     WorkoutSession fromDto(WorkoutSessionDto workoutSessionDto);
-
     WorkoutSessionDto toDto(WorkoutSession workoutSession);
 }

@@ -1,13 +1,11 @@
 package com.repkit.backend.mapper.impl;
 
-import com.repkit.backend.domain.entity.Exercise;
 import com.repkit.backend.domain.entity.WorkoutSession;
 import com.repkit.backend.dto.WorkoutSessionDto;
 import com.repkit.backend.mapper.ExerciseMapper;
 import com.repkit.backend.mapper.WorkoutSessionMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
