@@ -2,10 +2,7 @@ package com.repkit.backend.controller;
 
 import com.repkit.backend.dto.ExerciseDto;
 import com.repkit.backend.service.ExerciseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,5 +20,13 @@ public class ExerciseController {
     @GetMapping
     public List<ExerciseDto> getAllExercises(@PathVariable("session_id")UUID sessionId) {
         return exerciseService.getAllExercises(sessionId);
+    }
+
+    @PostMapping
+    public ExerciseDto createExercise(
+            @PathVariable("session_id") UUID sessionId,
+            @RequestBody ExerciseDto exerciseDto
+    ) {
+        return exerciseService.createExercise(sessionId, exerciseDto);
     }
 }

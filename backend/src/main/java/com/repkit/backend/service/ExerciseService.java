@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface ExerciseService {
 
     List<ExerciseDto> getAllExercises(UUID sessionId);
+    ExerciseDto createExercise(UUID sessionId, ExerciseDto exerciseDto);
 }

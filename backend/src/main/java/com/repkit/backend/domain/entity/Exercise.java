@@ -22,13 +22,13 @@ public class Exercise {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "sets", nullable = false)
+    @Column(name = "sets")
     private int sets;
 
-    @Column(name = "reps", nullable = false)
+    @Column(name = "reps")
     private int reps;
 
-    @Column(name = "rest_seconds", nullable = false)
+    @Column(name = "rest_seconds")
     private int restSeconds;
 
     @ManyToOne(fetch = FetchType.LAZY)
