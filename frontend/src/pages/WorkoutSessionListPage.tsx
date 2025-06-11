@@ -1,27 +1,15 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import type { WorkoutSession } from '../types';
 import { getWorkoutSessions } from '../api/workoutSessionApi';
 
 const WorkoutSessionListPage: React.FC = () => {
   const navigate = useNavigate();
-  const [sessions, setSessions] = useState<WorkoutSession[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchSessions = async () => {
-      try {
-        const data = await getWorkoutSessions();
-        setSessions(data);
-      } catch (error) {
-        console.error('Error fetching workout sessions:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSessions();
-  }, []);
+  const { data: sessions, isLoading } = useQuery({
+    queryKey: ['sessions'],
+    queryFn: getWorkoutSessions,
+  });
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
@@ -39,7 +27,7 @@ const WorkoutSessionListPage: React.FC = () => {
           </Link>
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <p className="text-center text-gray-500">Loading sessions...</p>
         ) : sessions.length === 0 ? (
           <p className="text-center text-gray-500">
@@ -47,7 +35,7 @@ const WorkoutSessionListPage: React.FC = () => {
           </p>
         ) : (
           <ul className="space-y-4">
-            {sessions.map((session) => (
+            {sessions.map((session: WorkoutSession) => (
               <li
                 key={session.id}
                 className="p-4 transition bg-white rounded shadow cursor-pointer hover:shadow-lg"
