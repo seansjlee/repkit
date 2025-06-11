@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import WorkoutSessionListPage from './pages/WorkoutSessionListPage';
 import WorkoutSessionFormPage from './pages/WorkoutSessionFormPage';
 import ExerciseListPage from './pages/ExerciseListPage';
+import ExerciseFormPage from './pages/ExerciseFormPage';
 
 function App() {
   return (
@@ -28,6 +29,10 @@ function App() {
         <Route
           path="/workout-sessions/:sessionId/edit"
           element={<WorkoutSessionFormPage />}
+        />
+        <Route
+          path="/workout-sessions/:sessionId/new-exercise"
+          element={<ExerciseFormPage />}
         />
       </Routes>
     </Router>
