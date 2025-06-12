@@ -19,7 +19,6 @@ public class WorkoutSessionMapperImpl implements WorkoutSessionMapper {
 
     @Override
     public WorkoutSession fromDto(WorkoutSessionDto workoutSessionDto) {
-
         return new WorkoutSession(
                 workoutSessionDto.id(),
                 workoutSessionDto.name(),

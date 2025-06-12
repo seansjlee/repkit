@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,16 +24,14 @@ public class Exercise {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "sets")
-    private int sets;
-
-    @Column(name = "reps")
-    private int reps;
-
     @Column(name = "rest_seconds")
     private int restSeconds;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", nullable = false)
     private WorkoutSession workoutSession;
+
+    @OneToMany(mappedBy = "exerciseSet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseSet> exerciseSets = new ArrayList<>();
+
 }
