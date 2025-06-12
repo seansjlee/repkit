@@ -7,6 +7,7 @@ import {
   updateWorkoutSession,
 } from '../api/workoutSessionApi';
 import { ArrowLeft } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 const WorkoutSessionFormPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,27 +17,23 @@ const WorkoutSessionFormPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const {
+    data: session,
+    isLoading: isLoadingSession,
+    error: queryError,
+  } = useQuery({
+    queryKey: ['session', sessionId],
+    queryFn: () => getWorkoutSession(sessionId!),
+    enabled: !!sessionId,
+  });
 
   useEffect(() => {
-    if (sessionId) {
+    if (session) {
+      setSessionName(session.name);
       setIsUpdate(true);
-      setLoading(true);
-
-      const fetchData = async () => {
-        try {
-          const session = await getWorkoutSession(sessionId);
-          setSessionName(session.name);
-        } catch (error) {
-          setError('Failed to load session.');
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
     }
-  }, [sessionId]);
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +79,7 @@ const WorkoutSessionFormPage: React.FC = () => {
     }
   };
 
-  if (loading) {
+  if (isLoadingSession) {
     return <p className="mt-10 text-center text-gray-500">Loading...</p>;
   }
 
@@ -117,7 +114,11 @@ const WorkoutSessionFormPage: React.FC = () => {
             />
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {(error || queryError) && (
+            <p className="text-sm text-red-500">
+              {error || queryError?.message}
+            </p>
+          )}
 
           <div className="space-y-2">
             <button
