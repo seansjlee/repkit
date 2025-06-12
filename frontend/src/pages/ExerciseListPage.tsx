@@ -1,57 +1,28 @@
-import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Pencil } from 'lucide-react';
-import { type Exercise, type WorkoutSession } from '../types';
 import { getWorkoutSession } from '../api/workoutSessionApi';
 import { getExercises } from '../api/exerciseApi';
+import { useQuery } from '@tanstack/react-query';
 
 const ExerciseListPage: React.FC = () => {
   const navigate = useNavigate();
   const { sessionId } = useParams();
 
-  const [session, setSession] = useState<WorkoutSession | null>(null);
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [loadingSession, setLoadingSession] = useState(true);
-  const [loadingExercises, setLoadingExercises] = useState(true);
-
   // fetch session
-  useEffect(() => {
-    if (!sessionId) return;
-
-    const fetchSession = async () => {
-      try {
-        const data = await getWorkoutSession(sessionId);
-        setSession(data);
-      } catch (error) {
-        console.error('Failed to fetch session:', error);
-      } finally {
-        setLoadingSession(false);
-      }
-    };
-
-    fetchSession();
-  }, [sessionId]);
+  const { data: session, isLoading: isLoadingSession } = useQuery({
+    queryKey: ['session', sessionId],
+    queryFn: () => getWorkoutSession(sessionId!),
+    enabled: !!sessionId,
+  });
 
   // fetch exercises
-  useEffect(() => {
-    if (!sessionId) return;
+  const { data: exercises = [], isLoading: isLoadingExercises } = useQuery({
+    queryKey: ['exercises', sessionId],
+    queryFn: () => getExercises(sessionId!),
+    enabled: !!sessionId,
+  });
 
-    const fetchExercises = async () => {
-      try {
-        const data = await getExercises(sessionId);
-        console.log('getExercises returned:', data);
-        setExercises(data);
-      } catch (error) {
-        console.error('Failed to fetch exercises:', error);
-      } finally {
-        setLoadingExercises(false);
-      }
-    };
-
-    fetchExercises();
-  }, [sessionId]);
-
-  if (loadingSession) {
+  if (isLoadingSession) {
     return (
       <p className="mt-10 text-center text-gray-500">Loading session...</p>
     );
@@ -91,7 +62,7 @@ const ExerciseListPage: React.FC = () => {
           </Link>
         </div>
 
-        {loadingExercises ? (
+        {isLoadingExercises ? (
           <p className="text-center text-gray-500">Loading exercises...</p>
         ) : exercises.length === 0 ? (
           <p className="text-center text-gray-500">No exercises found.</p>
