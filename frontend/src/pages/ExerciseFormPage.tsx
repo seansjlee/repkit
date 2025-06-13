@@ -1,15 +1,15 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createExercise } from '../api/exerciseApi';
+import type { ExerciseSet } from '../types/exerciseSet.types';
 
 const ExerciseFormPage: React.FC = () => {
   const navigate = useNavigate();
   const { sessionId } = useParams();
 
   const [exerciseName, setExerciseName] = useState('');
-  const [sets, setSets] = useState<number | null>(null);
-  const [reps, setReps] = useState<number | null>(null);
+  const [exerciseSets, setExerciseSets] = useState<ExerciseSet[]>([]);
   const [restSeconds, setRestSeconds] = useState<number | null>(null);
   const [isUpdate, setIsUpdate] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,13 +21,32 @@ const ExerciseFormPage: React.FC = () => {
     setSubmitting(true);
 
     try {
-      await createExercise(sessionId!, exerciseName, sets, reps, restSeconds);
+      await createExercise(sessionId!, exerciseName, restSeconds, exerciseSets);
       navigate(`/workout-sessions/${sessionId}`);
     } catch (error) {
       setError('Failed to create new exercise. Please try again');
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const addSet = () => {
+    setExerciseSets([...exerciseSets, { weight: null, reps: null }]);
+  };
+
+  const updateSet = (
+    index: number,
+    key: 'weight' | 'reps',
+    value: number | null,
+  ) => {
+    setExerciseSets((prev) =>
+      prev.map((set, i) => (i === index ? { ...set, [key]: value } : set)),
+    );
+  };
+
+  const removeSet = (index: number) => {
+    const updated = exerciseSets.filter((_, i) => i !== index);
+    setExerciseSets(updated);
   };
 
   const handleDelete = async () => {};
@@ -64,37 +83,62 @@ const ExerciseFormPage: React.FC = () => {
               required
             />
           </div>
+
           <div>
-            <label htmlFor="sets" className="block mb-1 font-medium">
-              Sets
-            </label>
-            <input
-              id="sets"
-              type="number"
-              className="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={sets !== null ? sets : ''}
-              onChange={(e) =>
-                setSets(e.target.value === '' ? null : Number(e.target.value))
-              }
-            />
+            <label className="block mb-1 font-medium">Sets</label>
+            <button
+              type="button"
+              onClick={addSet}
+              className="flex items-center px-3 py-1 mb-2 text-sm font-medium text-blue-600 border border-blue-600 rounded hover:bg-blue-50"
+            >
+              <Plus className="w-4 h-4 mr-1" /> Add Set
+            </button>
+            {exerciseSets.map((exerciseSet, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 p-2 mb-2 border rounded-md"
+              >
+                <span className="text-sm font-medium">Set {index + 1}</span>
+                <input
+                  type="number"
+                  placeholder="Weight"
+                  className="w-32 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={exerciseSet.weight ?? ''}
+                  onChange={(e) =>
+                    updateSet(
+                      index,
+                      'weight',
+                      e.target.value === '' ? null : Number(e.target.value),
+                    )
+                  }
+                />
+                <input
+                  type="number"
+                  placeholder="Reps"
+                  className="w-32 px-2 py-1 text-sm border rounded w-30 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={exerciseSet.reps ?? ''}
+                  onChange={(e) =>
+                    updateSet(
+                      index,
+                      'reps',
+                      e.target.value === '' ? null : Number(e.target.value),
+                    )
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => removeSet(index)}
+                  className="ml-auto text-sm text-red-500 hover:text-red-700"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
           </div>
-          <div>
-            <label htmlFor="reps" className="block mb-1 font-medium">
-              Reps
-            </label>
-            <input
-              id="reps"
-              type="number"
-              className="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={reps !== null ? reps : ''}
-              onChange={(e) =>
-                setReps(e.target.value === '' ? null : Number(e.target.value))
-              }
-            />
-          </div>
+
           <div>
             <label htmlFor="restSeconds" className="block mb-1 font-medium">
-              Rest Time
+              Rest Between Sets (seconds)
             </label>
             <input
               id="restSeconds"
