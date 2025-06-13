@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { Exercise } from '../types';
+import type { ExerciseSet } from '../types/exerciseSet.types';
 
 export const getExercises = async (sessionId: string): Promise<Exercise[]> => {
   const response = await axios.get(`/api/workout-sessions/${sessionId}`);
@@ -10,13 +11,16 @@ export const getExercises = async (sessionId: string): Promise<Exercise[]> => {
 export const createExercise = async (
   sessionId: string,
   exerciseName: string,
-  sets: number | null,
-  reps: number | null,
   restSeconds: number | null,
+  exerciseSets: ExerciseSet[],
 ) => {
   const response = await axios.post(
     `/api/workout-sessions/${sessionId}/exercises`,
-    { name: exerciseName, sets: sets, reps: reps, restSeconds: restSeconds },
+    {
+      name: exerciseName,
+      restSeconds: restSeconds,
+      exerciseSets: exerciseSets,
+    },
   );
 
   return response.data;
