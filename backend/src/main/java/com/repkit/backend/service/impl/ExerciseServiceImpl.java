@@ -48,6 +48,16 @@ public class ExerciseServiceImpl implements ExerciseService {
         WorkoutSession workoutSession = workoutSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Workout Session ID provided!"));
 
+        Exercise exercise = new Exercise(
+                null,
+                exerciseDto.name(),
+                exerciseDto.restSeconds(),
+                new ArrayList<>(),
+                workoutSession
+        );
+
+        Exercise createdExercise = exerciseRepository.save(exercise);
+
         List<ExerciseSet> exerciseSets = new ArrayList<>();
         List<ExerciseSetDto> exerciseSetsDto = exerciseDto.exerciseSets();
 
@@ -57,16 +67,13 @@ public class ExerciseServiceImpl implements ExerciseService {
             exerciseSet.setSetNumber(i + 1);
             exerciseSet.setWeight(exerciseSetDto.weight());
             exerciseSet.setReps(exerciseSetDto.reps());
+            exerciseSet.setExercise(createdExercise);
             exerciseSets.add(exerciseSet);
         }
 
-        Exercise createdExercise = exerciseRepository.save(new Exercise(
-                null,
-                exerciseDto.name(),
-                exerciseDto.restSeconds(),
-                exerciseSets,
-                workoutSession
-        ));
+        createdExercise.getExerciseSets().clear();
+        createdExercise.getExerciseSets().addAll(exerciseSets);
+        exerciseRepository.save(createdExercise);
 
         return exerciseMapper.toDto(createdExercise);
     }
