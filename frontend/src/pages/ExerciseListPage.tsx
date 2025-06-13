@@ -3,10 +3,14 @@ import { ArrowLeft, Pencil } from 'lucide-react';
 import { getWorkoutSession } from '../api/workoutSessionApi';
 import { getExercises } from '../api/exerciseApi';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
 const ExerciseListPage: React.FC = () => {
   const navigate = useNavigate();
   const { sessionId } = useParams();
+  const [expandedExerciseId, setExpandedExerciseId] = useState<string | null>(
+    null,
+  );
 
   // fetch session
   const { data: session, isLoading: isLoadingSession } = useQuery({
@@ -31,6 +35,10 @@ const ExerciseListPage: React.FC = () => {
   if (!session) {
     return <p className="mt-10 text-center text-red-500">Session not found.</p>;
   }
+
+  const toggleExpand = (exerciseId: string) => {
+    setExpandedExerciseId((prev) => (prev === exerciseId ? null : exerciseId));
+  };
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
@@ -72,8 +80,27 @@ const ExerciseListPage: React.FC = () => {
               <li
                 key={exercise.id}
                 className="p-4 transition bg-white rounded shadow cursor-pointer hover:shadow-lg"
+                onClick={() => toggleExpand(exercise.id)}
               >
                 <h2 className="text-xl font-semibold">{exercise.name}</h2>
+                {expandedExerciseId === exercise.id && (
+                  <div className="mt-4 space-y-2">
+                    {exercise.exerciseSets.map((exerciseSet, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between px-3 py-2 text-sm text-gray-700 bg-gray-100 rounded"
+                      >
+                        <span>Set {exerciseSet.setNumber}</span>
+                        <span>
+                          {exerciseSet.weight} kg × {exerciseSet.reps} reps
+                        </span>
+                      </div>
+                    ))}
+                    <p className="mt-2 text-sm text-gray-500">
+                      Rest between sets: {exercise.restSeconds} seconds
+                    </p>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
