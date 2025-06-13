@@ -27,11 +27,10 @@ public class Exercise {
     @Column(name = "rest_seconds")
     private int restSeconds;
 
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseSet> exerciseSets = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", nullable = false)
     private WorkoutSession workoutSession;
-
-    @OneToMany(mappedBy = "exerciseSet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExerciseSet> exerciseSets = new ArrayList<>();
-
 }

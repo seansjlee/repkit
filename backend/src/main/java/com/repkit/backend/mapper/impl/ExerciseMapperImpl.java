@@ -23,10 +23,10 @@ public class ExerciseMapperImpl implements ExerciseMapper {
                 exerciseDto.id(),
                 exerciseDto.name(),
                 exerciseDto.restSeconds(),
-                null,
                 Optional.ofNullable(exerciseDto.exerciseSets())
                         .map(exerciseSets -> exerciseSets.stream().map(exerciseSetMapper::fromDto).toList())
-                        .orElse(null)
+                        .orElse(null),
+                null
         );
     }
 
