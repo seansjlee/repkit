@@ -1,8 +1,8 @@
 import type { ExerciseSet } from './exerciseSet.types';
 
 export interface Exercise {
-  id: String;
-  name: String;
+  id: string;
+  name: string;
   restSeconds: number;
   exerciseSets: ExerciseSet[];
 }
