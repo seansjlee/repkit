@@ -6,7 +6,7 @@ import type { ExerciseSet } from '../types/exerciseSet.types';
 
 const ExerciseFormPage: React.FC = () => {
   const navigate = useNavigate();
-  const { sessionId } = useParams();
+  const { sessionId, exerciseId } = useParams();
 
   const [exerciseName, setExerciseName] = useState('');
   const [exerciseSets, setExerciseSets] = useState<ExerciseSet[]>([]);
@@ -22,7 +22,7 @@ const ExerciseFormPage: React.FC = () => {
 
     try {
       await createExercise(sessionId!, exerciseName, restSeconds, exerciseSets);
-      navigate(`/workout-sessions/${sessionId}`);
+      navigate(`/workout-sessions/${sessionId}/exercises`);
     } catch (error) {
       setError('Failed to create new exercise. Please try again');
     } finally {

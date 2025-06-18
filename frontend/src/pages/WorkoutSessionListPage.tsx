@@ -39,7 +39,9 @@ const WorkoutSessionListPage: React.FC = () => {
               <li
                 key={session.id}
                 className="p-4 transition bg-white rounded shadow cursor-pointer hover:shadow-lg"
-                onClick={() => navigate(`/workout-sessions/${session.id}`)}
+                onClick={() =>
+                  navigate(`/workout-sessions/${session.id}/exercises`)
+                }
               >
                 <h2 className="text-xl font-semibold">{session.name}</h2>
               </li>

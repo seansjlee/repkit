@@ -23,7 +23,7 @@ function App() {
           element={<WorkoutSessionFormPage />}
         />
         <Route
-          path="/workout-sessions/:sessionId"
+          path="/workout-sessions/:sessionId/exercises"
           element={<ExerciseListPage />}
         />
         <Route
@@ -31,7 +31,11 @@ function App() {
           element={<WorkoutSessionFormPage />}
         />
         <Route
-          path="/workout-sessions/:sessionId/new-exercise"
+          path="/workout-sessions/:sessionId/exercises/new"
+          element={<ExerciseFormPage />}
+        />
+        <Route
+          path="/workout-sessions/:sessionId/exercises/:exerciseId/edit"
           element={<ExerciseFormPage />}
         />
       </Routes>

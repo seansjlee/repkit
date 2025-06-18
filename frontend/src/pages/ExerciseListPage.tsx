@@ -63,7 +63,7 @@ const ExerciseListPage: React.FC = () => {
 
         <div className="flex justify-center mb-6">
           <Link
-            to={`/workout-sessions/${sessionId}/new-exercise`}
+            to={`/workout-sessions/${sessionId}/exercises/new`}
             className="px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700"
           >
             Add Exercise
@@ -82,7 +82,20 @@ const ExerciseListPage: React.FC = () => {
                 className="p-4 transition bg-white rounded shadow cursor-pointer hover:shadow-lg"
                 onClick={() => toggleExpand(exercise.id)}
               >
-                <h2 className="text-xl font-semibold">{exercise.name}</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">{exercise.name}</h2>
+                  <button
+                    type="button"
+                    className="p-1 rounded hover:bg-gray-100"
+                    onClick={() =>
+                      navigate(
+                        `/workout-sessions/${sessionId}/exercises/${exercise.id}/edit`,
+                      )
+                    }
+                  >
+                    <Pencil className="w-4 h-4 text-black" />
+                  </button>
+                </div>
                 {expandedExerciseId === exercise.id && (
                   <div className="mt-4 space-y-2">
                     {exercise.exerciseSets.map((exerciseSet, index) => (
