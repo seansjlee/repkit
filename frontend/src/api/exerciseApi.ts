@@ -25,3 +25,11 @@ export const createExercise = async (
 
   return response.data;
 };
+
+export const getExercise = async (sessionId: string, exerciseId: string) => {
+  const response = await axios.get(
+    `/api/workout-sessions/${sessionId}/exercises/${exerciseId}`,
+  );
+
+  return response.data;
+};
