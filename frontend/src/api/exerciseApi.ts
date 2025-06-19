@@ -3,9 +3,11 @@ import type { Exercise } from '../types';
 import type { ExerciseSet } from '../types/exerciseSet.types';
 
 export const getExercises = async (sessionId: string): Promise<Exercise[]> => {
-  const response = await axios.get(`/api/workout-sessions/${sessionId}`);
+  const response = await axios.get(
+    `/api/workout-sessions/${sessionId}/exercises`,
+  );
 
-  return response.data.exercises;
+  return response.data;
 };
 
 export const createExercise = async (
