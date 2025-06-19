@@ -7,6 +7,7 @@ import com.repkit.backend.domain.repository.ExerciseRepository;
 import com.repkit.backend.domain.repository.WorkoutSessionRepository;
 import com.repkit.backend.dto.ExerciseDto;
 import com.repkit.backend.dto.ExerciseSetDto;
+import com.repkit.backend.exception.ResourceNotFoundException;
 import com.repkit.backend.mapper.ExerciseMapper;
 import com.repkit.backend.service.ExerciseService;
 import org.springframework.stereotype.Service;
@@ -76,5 +77,22 @@ public class ExerciseServiceImpl implements ExerciseService {
         exerciseRepository.save(createdExercise);
 
         return exerciseMapper.toDto(createdExercise);
+    }
+
+    @Override
+    public ExerciseDto getExerciseById(UUID sessionId, UUID exerciseId) {
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+
+        if (!exercise.getWorkoutSession().getId().equals(sessionId)) {
+            throw new IllegalArgumentException("Exercise does not belong to this session");
+        }
+
+        return exerciseMapper.toDto(exercise);
+    }
+
+    @Override
+    public void deleteExerciseById(UUID sessionId, UUID exerciseId) {
+        exerciseRepository.deleteById(exerciseId);
     }
 }

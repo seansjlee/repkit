@@ -29,4 +29,20 @@ public class ExerciseController {
     ) {
         return exerciseService.createExercise(sessionId, exerciseDto);
     }
+
+    @GetMapping("/{exercise_id}")
+    public ExerciseDto getExerciseById(
+            @PathVariable("session_id") UUID sessionId,
+            @PathVariable("exercise_id") UUID exerciseId
+    ) {
+        return exerciseService.getExerciseById(sessionId, exerciseId);
+    }
+
+    @DeleteMapping("/{exercise_id}")
+    public void deleteExerciseById(
+            @PathVariable("session_id") UUID sessionId,
+            @PathVariable("exercise_id") UUID exerciseId
+    ) {
+        exerciseService.deleteExerciseById(sessionId, exerciseId);
+    }
 }

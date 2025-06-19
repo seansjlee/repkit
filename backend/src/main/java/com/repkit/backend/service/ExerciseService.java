@@ -9,4 +9,6 @@ public interface ExerciseService {
 
     List<ExerciseDto> getAllExercises(UUID sessionId);
     ExerciseDto createExercise(UUID sessionId, ExerciseDto exerciseDto);
+    ExerciseDto getExerciseById(UUID sessionId, UUID exerciseId);
+    void deleteExerciseById(UUID sessionId, UUID exerciseId);
 }

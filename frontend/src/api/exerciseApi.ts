@@ -35,3 +35,30 @@ export const getExercise = async (sessionId: string, exerciseId: string) => {
 
   return response.data;
 };
+
+export const updateExercise = async (
+  sessionId: string,
+  exerciseId: string,
+  exerciseName: string,
+  restSeconds: number | null,
+  exerciseSets: ExerciseSet[],
+) => {
+  const response = await axios.put(
+    `/api/workout-sessions/${sessionId}/exercises/${exerciseId}`,
+    {
+      name: exerciseName,
+      restSeconds: restSeconds,
+      exerciseSets: exerciseSets,
+    },
+  );
+
+  return response.data;
+};
+
+export const deleteExercise = async (sessionId: string, exerciseId: string) => {
+  const response = await axios.delete(
+    `/api/workout-sessions/${sessionId}/exercises/${exerciseId}`,
+  );
+
+  return response.data;
+};

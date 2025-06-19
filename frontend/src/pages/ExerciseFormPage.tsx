@@ -1,8 +1,14 @@
 import { ArrowLeft, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createExercise } from '../api/exerciseApi';
+import {
+  createExercise,
+  deleteExercise,
+  getExercise,
+  updateExercise,
+} from '../api/exerciseApi';
 import type { ExerciseSet } from '../types/exerciseSet.types';
+import { useQuery } from '@tanstack/react-query';
 
 const ExerciseFormPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,16 +21,64 @@ const ExerciseFormPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  const {
+    data: exercise,
+    isLoading: isLoadingExercise,
+    error: queryError,
+  } = useQuery({
+    queryKey: ['exercise', sessionId, exerciseId],
+    queryFn: () => getExercise(sessionId!, exerciseId!),
+    enabled: !!sessionId && !!exerciseId,
+  });
+
+  useEffect(() => {
+    if (exercise) {
+      setExerciseName(exercise.name);
+      setExerciseSets(exercise.exerciseSets);
+      setRestSeconds(exercise.restSeconds);
+      setIsUpdate(true);
+    }
+  }, [exercise]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
 
     try {
-      await createExercise(sessionId!, exerciseName, restSeconds, exerciseSets);
-      navigate(`/workout-sessions/${sessionId}/exercises`);
+      if (isUpdate) {
+        if (!sessionId) {
+          setError('Session ID is missing. Cannot update workout session.');
+          return;
+        }
+        if (!exerciseId) {
+          setError('Exercise ID is missing. Cannot update exercise.');
+          return;
+        }
+
+        await updateExercise(
+          sessionId!,
+          exerciseId!,
+          exerciseName,
+          restSeconds,
+          exerciseSets,
+        );
+        navigate(`/workout-sessions/${sessionId}/exercises`);
+      } else {
+        await createExercise(
+          sessionId!,
+          exerciseName,
+          restSeconds,
+          exerciseSets,
+        );
+        navigate(`/workout-sessions/${sessionId}/exercises`);
+      }
     } catch (error) {
-      setError('Failed to create new exercise. Please try again');
+      setError(
+        isUpdate
+          ? 'Failed to update exercise. Please try again.'
+          : 'Failed to create exercise. Please try again',
+      );
     } finally {
       setSubmitting(false);
     }
@@ -49,7 +103,28 @@ const ExerciseFormPage: React.FC = () => {
     setExerciseSets(updated);
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    if (!sessionId || !exerciseId) return;
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this exercise?',
+    );
+    if (!confirmDelete) return;
+
+    setSubmitting(true);
+
+    try {
+      await deleteExercise(sessionId, exerciseId);
+      navigate(`/workout-sessions/${sessionId}/exercises`);
+    } catch (error) {
+      setError('Failed to delete exercise.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (isLoadingExercise) {
+    return <p className="mt-10 text-center text-gray-500">Loading...</p>;
+  }
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
@@ -153,7 +228,11 @@ const ExerciseFormPage: React.FC = () => {
             />
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {(error || queryError) && (
+            <p className="text-sm text-red-500">
+              {error || queryError?.message}
+            </p>
+          )}
 
           <div className="space-y-2">
             <button

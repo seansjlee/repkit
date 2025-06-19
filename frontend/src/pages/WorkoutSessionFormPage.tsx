@@ -54,7 +54,11 @@ const WorkoutSessionFormPage: React.FC = () => {
         navigate('/');
       }
     } catch (error) {
-      setError('Failed to create workout session. Please try again.');
+      setError(
+        isUpdate
+          ? 'Failed to update workout session. Please try again.'
+          : 'Failed to create workout session. Please try again.',
+      );
     } finally {
       setSubmitting(false);
     }
