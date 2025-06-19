@@ -38,6 +38,15 @@ public class ExerciseController {
         return exerciseService.getExerciseById(sessionId, exerciseId);
     }
 
+    @PutMapping("/{exercise_id}")
+    public ExerciseDto updateExercise(
+            @PathVariable("session_id") UUID sessionId,
+            @PathVariable("exercise_id") UUID exerciseId,
+            @RequestBody ExerciseDto exerciseDto
+    ) {
+        return exerciseService.updateExercise(sessionId, exerciseId, exerciseDto);
+    }
+
     @DeleteMapping("/{exercise_id}")
     public void deleteExerciseById(
             @PathVariable("session_id") UUID sessionId,

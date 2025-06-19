@@ -11,6 +11,7 @@ import com.repkit.backend.exception.ResourceNotFoundException;
 import com.repkit.backend.mapper.ExerciseMapper;
 import com.repkit.backend.service.ExerciseService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,6 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     public ExerciseDto createExercise(UUID sessionId, ExerciseDto exerciseDto) {
-        if (null != exerciseDto.id()) {
-            throw new IllegalArgumentException("Exercise already has an ID!");
-        }
         if (null == exerciseDto.name() || exerciseDto.name().isBlank()) {
             throw new IllegalArgumentException("Exercise name cannot be empty!");
         }
@@ -89,6 +87,43 @@ public class ExerciseServiceImpl implements ExerciseService {
         }
 
         return exerciseMapper.toDto(exercise);
+    }
+
+    @Transactional
+    @Override
+    public ExerciseDto updateExercise(UUID sessionId, UUID exerciseId, ExerciseDto exerciseDto) {
+        if (null == exerciseDto.name() || exerciseDto.name().isBlank()) {
+            throw new IllegalArgumentException("Exercise name cannot be empty");
+        }
+
+        Exercise existingExercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+
+        if (!existingExercise.getWorkoutSession().getId().equals(sessionId)) {
+            throw new IllegalArgumentException("Exercise does not belong to this session");
+        }
+
+        existingExercise.setName(exerciseDto.name());
+        existingExercise.setRestSeconds(exerciseDto.restSeconds());
+
+        List<ExerciseSet> updatedExerciseSets = new ArrayList<>();
+        List<ExerciseSetDto> exerciseSetsDto = exerciseDto.exerciseSets();
+
+        for (int i = 0; i < exerciseSetsDto.size(); i++) {
+            ExerciseSetDto exerciseSetDto = exerciseSetsDto.get(i);
+            ExerciseSet exerciseSet = new ExerciseSet();
+            exerciseSet.setSetNumber(i + 1);
+            exerciseSet.setWeight(exerciseSetDto.weight());
+            exerciseSet.setReps(exerciseSetDto.reps());
+            exerciseSet.setExercise(existingExercise);
+            updatedExerciseSets.add(exerciseSet);
+        }
+
+        existingExercise.getExerciseSets().clear();
+        existingExercise.getExerciseSets().addAll(updatedExerciseSets);
+
+        Exercise updatedExercise = exerciseRepository.save(existingExercise);
+        return exerciseMapper.toDto(updatedExercise);
     }
 
     @Override
