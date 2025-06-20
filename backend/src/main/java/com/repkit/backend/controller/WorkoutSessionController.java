@@ -40,4 +40,8 @@ public class WorkoutSessionController {
         return workoutSessionService.updateWorkoutSession(sessionId, workoutSessionDto);
     }
 
+    @DeleteMapping("/{session_id}")
+    public void deleteWorkoutSession(@PathVariable("session_id") UUID sessionId) {
+        workoutSessionService.deleteWorkoutSession(sessionId);
+    }
 }
