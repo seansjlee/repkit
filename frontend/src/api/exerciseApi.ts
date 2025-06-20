@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Exercise } from '../types';
+import type { Exercise } from '../types/exercise.types';
 import type { ExerciseSet } from '../types/exerciseSet.types';
 
 export const getExercises = async (sessionId: string): Promise<Exercise[]> => {

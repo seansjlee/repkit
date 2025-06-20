@@ -84,17 +84,30 @@ const ExerciseListPage: React.FC = () => {
               >
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold">{exercise.name}</h2>
-                  <button
-                    type="button"
-                    className="p-1 rounded hover:bg-gray-100"
-                    onClick={() =>
-                      navigate(
-                        `/workout-sessions/${sessionId}/exercises/${exercise.id}/edit`,
-                      )
-                    }
-                  >
-                    <Pencil className="w-4 h-4 text-black" />
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className="p-1 rounded hover:bg-gray-100"
+                      onClick={() =>
+                        navigate(
+                          `/workout-sessions/${sessionId}/exercises/${exercise.id}/edit`,
+                        )
+                      }
+                    >
+                      <Pencil className="w-4 h-4 text-black" />
+                    </button>
+                    <button
+                      type="button"
+                      className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+                      onClick={() =>
+                        navigate(
+                          `/workout-sessions/${sessionId}/exercises/${exercise.id}/timer`,
+                        )
+                      }
+                    >
+                      Start
+                    </button>
+                  </div>
                 </div>
                 {expandedExerciseId === exercise.id && (
                   <div className="mt-4 space-y-2">
