@@ -9,6 +9,7 @@ import WorkoutSessionListPage from './pages/WorkoutSessionListPage';
 import WorkoutSessionFormPage from './pages/WorkoutSessionFormPage';
 import ExerciseListPage from './pages/ExerciseListPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
+import ExerciseTimerPage from './pages/ExerciseTimerPage';
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
         <Route
           path="/workout-sessions/:sessionId/exercises/:exerciseId/edit"
           element={<ExerciseFormPage />}
+        />
+        <Route
+          path="/workout-sessions/:sessionId/exercises/:exerciseId/timer"
+          element={<ExerciseTimerPage />}
         />
       </Routes>
     </Router>
