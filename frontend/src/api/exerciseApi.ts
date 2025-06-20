@@ -1,11 +1,9 @@
-import axios from 'axios';
+import axios from './axiosInstance';
 import type { Exercise } from '../types/exercise.types';
 import type { ExerciseSet } from '../types/exerciseSet.types';
 
 export const getExercises = async (sessionId: string): Promise<Exercise[]> => {
-  const response = await axios.get(
-    `/api/workout-sessions/${sessionId}/exercises`,
-  );
+  const response = await axios.get(`/workout-sessions/${sessionId}/exercises`);
 
   return response.data;
 };
@@ -17,7 +15,7 @@ export const createExercise = async (
   exerciseSets: ExerciseSet[],
 ) => {
   const response = await axios.post(
-    `/api/workout-sessions/${sessionId}/exercises`,
+    `/workout-sessions/${sessionId}/exercises`,
     {
       name: exerciseName,
       restSeconds: restSeconds,
@@ -30,7 +28,7 @@ export const createExercise = async (
 
 export const getExercise = async (sessionId: string, exerciseId: string) => {
   const response = await axios.get(
-    `/api/workout-sessions/${sessionId}/exercises/${exerciseId}`,
+    `/workout-sessions/${sessionId}/exercises/${exerciseId}`,
   );
 
   return response.data;
@@ -44,7 +42,7 @@ export const updateExercise = async (
   exerciseSets: ExerciseSet[],
 ) => {
   const response = await axios.put(
-    `/api/workout-sessions/${sessionId}/exercises/${exerciseId}`,
+    `/workout-sessions/${sessionId}/exercises/${exerciseId}`,
     {
       name: exerciseName,
       restSeconds: restSeconds,
@@ -57,7 +55,7 @@ export const updateExercise = async (
 
 export const deleteExercise = async (sessionId: string, exerciseId: string) => {
   const response = await axios.delete(
-    `/api/workout-sessions/${sessionId}/exercises/${exerciseId}`,
+    `/workout-sessions/${sessionId}/exercises/${exerciseId}`,
   );
 
   return response.data;
