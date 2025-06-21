@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getExercise } from '../api/exerciseApi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import {
   ArrowLeft,
@@ -10,10 +10,12 @@ import {
   Pause,
   Play,
 } from 'lucide-react';
+import { useVoice } from '../hooks/useVoice';
 
 const ExerciseTimerPage: React.FC = () => {
   const { sessionId, exerciseId } = useParams();
   const navigate = useNavigate();
+  const { speak } = useVoice();
 
   const [phase, setPhase] = useState<'ready' | 'set' | 'rest' | 'done'>(
     'ready',
@@ -28,6 +30,18 @@ const ExerciseTimerPage: React.FC = () => {
     enabled: !!sessionId && !!exerciseId,
   });
 
+  useEffect(() => {
+    if (phase === 'set') {
+      speak(
+        `Set ${currentSetIndex + 1}, ${exercise.exerciseSets[currentSetIndex]?.reps} reps.`,
+      );
+    } else if (phase === 'rest') {
+      speak('Rest');
+    } else if (phase === 'done') {
+      speak('Workout complete');
+    }
+  }, [phase]);
+
   const handleFinishSet = () => {
     setPhase('rest');
     setIsRunning(true);
@@ -38,7 +52,7 @@ const ExerciseTimerPage: React.FC = () => {
     if (currentSetIndex + 1 < (exercise?.exerciseSets?.length || 0)) {
       setCurrentSetIndex((prev) => prev + 1);
       setPhase('set');
-      setIsRunning(false);
+      setIsRunning(true);
     } else {
       setPhase('done');
     }
@@ -47,11 +61,11 @@ const ExerciseTimerPage: React.FC = () => {
   const handlePrevious = () => {
     if (phase === 'rest') {
       setPhase('set');
-      setIsRunning(false);
+      setIsRunning(true);
     } else if (phase === 'set' && currentSetIndex > 0) {
       setCurrentSetIndex((prev) => prev - 1);
       setPhase('rest');
-      setIsRunning(false);
+      setIsRunning(true);
     } else if (phase === 'set') {
       setPhase('ready');
       setIsRunning(false);
@@ -61,13 +75,13 @@ const ExerciseTimerPage: React.FC = () => {
   const handleNext = () => {
     if (phase === 'ready') {
       setPhase('set');
-      setIsRunning(false);
+      setIsRunning(true);
     } else if (
       phase === 'rest' &&
       currentSetIndex + 1 < (exercise?.exerciseSets?.length ?? 0)
     ) {
       setPhase('set');
-      setIsRunning(false);
+      setIsRunning(true);
       setCurrentSetIndex((prev) => prev + 1);
     } else if (
       phase === 'set' &&
@@ -186,7 +200,12 @@ const ExerciseTimerPage: React.FC = () => {
 
             <button
               className="p-3 text-white bg-blue-600 rounded-full hover:bg-blue-700"
-              onClick={() => setIsRunning((prev) => !prev)}
+              onClick={() => {
+                if (phase === 'ready') {
+                  speak(`${exercise.name}. Get ready.`);
+                }
+                setIsRunning((prev) => !prev);
+              }}
             >
               {isRunning ? (
                 <Pause className="w-6 h-6" />
