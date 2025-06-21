@@ -170,13 +170,13 @@ const ExerciseFormPage: React.FC = () => {
             {exerciseSets.map((exerciseSet, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 p-2 mb-2 border rounded-md"
+                className="flex items-center gap-1 p-2 mb-2 border rounded-md"
               >
                 <span className="text-sm font-medium">Set {index + 1}</span>
                 <input
                   type="number"
-                  placeholder="Weight"
-                  className="w-32 px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="weight"
+                  className="w-20 px-2 py-1 ml-2 text-sm border rounded sm:w-28 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={exerciseSet.weight ?? ''}
                   onChange={(e) =>
                     updateSet(
@@ -186,10 +186,11 @@ const ExerciseFormPage: React.FC = () => {
                     )
                   }
                 />
+                <span className="text-sm text-gray-500">kg</span>
                 <input
                   type="number"
-                  placeholder="Reps"
-                  className="w-32 px-2 py-1 text-sm border rounded w-30 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="reps"
+                  className="w-20 px-2 py-1 ml-2 text-sm border rounded sm:w-28 w-30 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={exerciseSet.reps ?? ''}
                   onChange={(e) =>
                     updateSet(
@@ -199,6 +200,7 @@ const ExerciseFormPage: React.FC = () => {
                     )
                   }
                 />
+                <span className="text-sm text-gray-500">reps</span>
                 <button
                   type="button"
                   onClick={() => removeSet(index)}
