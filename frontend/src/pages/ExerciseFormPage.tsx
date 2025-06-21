@@ -130,19 +130,17 @@ const ExerciseFormPage: React.FC = () => {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="w-full max-w-md">
-        <div className="flex items-center mb-6">
+        <div className="relative flex items-center justify-center mb-6">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex items-center justify-center w-12 border border-gray-300 rounded-md h-9 hover:bg-gray-100"
+            className="absolute left-0 flex items-center justify-center w-12 border border-gray-300 rounded-md h-9 hover:bg-gray-100"
           >
             <ArrowLeft className="w-5 h-5 text-gray-800" />
           </button>
-          <div className="flex-1 text-center">
-            <h1 className="text-3xl font-bold ">
-              {isUpdate ? 'Update Exercise' : 'Add New Exercise'}
-            </h1>
-          </div>
+          <h1 className="text-3xl font-bold ">
+            {isUpdate ? 'Edit Exercise' : 'Add Exercise'}
+          </h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

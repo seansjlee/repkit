@@ -87,14 +87,14 @@ const ExerciseTimerPage: React.FC = () => {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="w-full max-w-md">
-        <div className="flex items-center mb-6">
+        <div className="relative flex items-center justify-center mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center justify-center w-10 h-10 border border-gray-300 rounded-md hover:bg-gray-100"
+            className="absolute left-0 flex items-center justify-center w-10 h-10 border border-gray-300 rounded-md hover:bg-gray-100"
           >
             <ArrowLeft className="w-5 h-5 text-gray-800" />
           </button>
-          <h1 className="text-2xl font-bold ml-28">{exercise.name}</h1>
+          <h1 className="text-2xl font-bold">{exercise.name}</h1>
         </div>
 
         {/* Timer Display */}
