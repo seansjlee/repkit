@@ -20,6 +20,7 @@ const ExerciseFormPage: React.FC = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const {
     data: exercise,
@@ -110,7 +111,7 @@ const ExerciseFormPage: React.FC = () => {
     );
     if (!confirmDelete) return;
 
-    setSubmitting(true);
+    setDeleting(true);
 
     try {
       await deleteExercise(sessionId, exerciseId);
@@ -118,7 +119,7 @@ const ExerciseFormPage: React.FC = () => {
     } catch (error) {
       setError('Failed to delete exercise.');
     } finally {
-      setSubmitting(false);
+      setDeleting(false);
     }
   };
 
@@ -237,7 +238,7 @@ const ExerciseFormPage: React.FC = () => {
           <div className="space-y-2">
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || deleting}
               className="w-full px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700 disabled:opacity-50"
             >
               {submitting
@@ -252,10 +253,10 @@ const ExerciseFormPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleDelete}
-                disabled={submitting}
+                disabled={submitting || deleting}
                 className="w-full px-4 py-2 font-semibold text-red-600 border border-red-600 rounded shadow-md hover:bg-red-50 disabled:opacity-50"
               >
-                {submitting ? 'Deleting...' : 'Delete'}
+                {deleting ? 'Deleting...' : 'Delete'}
               </button>
             )}
           </div>
