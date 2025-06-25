@@ -5,6 +5,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import NotFoundPage from './pages/NotFoundPage';
 import WorkoutSessionListPage from './pages/WorkoutSessionListPage';
 import WorkoutSessionFormPage from './pages/WorkoutSessionFormPage';
 import ExerciseListPage from './pages/ExerciseListPage';
@@ -16,9 +18,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/workout-sessions" element={<WorkoutSessionListPage />} />
-        <Route path="/" element={<Navigate to="/workout-sessions" />} />
-        <Route path="*" element={<Navigate to="/workout-sessions" />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
         <Route
           path="/workout-sessions/new"
           element={<WorkoutSessionFormPage />}
