@@ -2,6 +2,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import type { WorkoutSession } from '../types';
 import { getWorkoutSessions } from '../api/workoutSessionApi';
+import { logout } from '../api/userApi';
 
 const WorkoutSessionListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,9 +12,22 @@ const WorkoutSessionListPage: React.FC = () => {
     queryFn: getWorkoutSessions,
   });
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
-      <div className="w-full max-w-xl">
+      <div className="relative w-full max-w-xl">
+        <div className="absolute top-0 right-0">
+          <button
+            onClick={handleLogout}
+            className="px-3 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
         <h1 className="mb-6 text-3xl font-bold text-center">
           Workout Sessions
         </h1>
