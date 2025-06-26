@@ -17,6 +17,9 @@ spring:
     console:
       enabled: true
 
+repkit:
+  logout-success-url: http://localhost:5173/login
+
 ---
 
 spring:
@@ -39,3 +42,6 @@ spring:
 server:
   port: ${PORT:8080}
   address: 0.0.0.0
+
+repkit:
+  logout-success-url: https://repkit.vercel.app
