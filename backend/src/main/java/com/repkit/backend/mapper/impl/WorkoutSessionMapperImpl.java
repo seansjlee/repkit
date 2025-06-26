@@ -1,5 +1,6 @@
 package com.repkit.backend.mapper.impl;
 
+import com.repkit.backend.domain.entity.User;
 import com.repkit.backend.domain.entity.WorkoutSession;
 import com.repkit.backend.dto.WorkoutSessionDto;
 import com.repkit.backend.mapper.ExerciseMapper;
@@ -18,13 +19,14 @@ public class WorkoutSessionMapperImpl implements WorkoutSessionMapper {
     }
 
     @Override
-    public WorkoutSession fromDto(WorkoutSessionDto workoutSessionDto) {
+    public WorkoutSession fromDto(WorkoutSessionDto workoutSessionDto, User user) {
         return new WorkoutSession(
                 workoutSessionDto.id(),
                 workoutSessionDto.name(),
                 Optional.ofNullable(workoutSessionDto.exercises())
                         .map(exercises -> exercises.stream().map(exerciseMapper::fromDto).toList())
-                        .orElse(null)
+                        .orElse(null),
+                user
         );
     }
 

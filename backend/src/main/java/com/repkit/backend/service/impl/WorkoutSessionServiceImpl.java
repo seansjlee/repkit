@@ -1,10 +1,15 @@
 package com.repkit.backend.service.impl;
 
+import com.repkit.backend.domain.entity.User;
 import com.repkit.backend.domain.entity.WorkoutSession;
+import com.repkit.backend.domain.repository.UserRepository;
 import com.repkit.backend.domain.repository.WorkoutSessionRepository;
 import com.repkit.backend.dto.WorkoutSessionDto;
 import com.repkit.backend.mapper.WorkoutSessionMapper;
 import com.repkit.backend.service.WorkoutSessionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,20 +18,19 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
     private final WorkoutSessionRepository workoutSessionRepository;
     private final WorkoutSessionMapper workoutSessionMapper;
-
-    public WorkoutSessionServiceImpl(WorkoutSessionRepository workoutSessionRepository, WorkoutSessionMapper workoutSessionMapper) {
-        this.workoutSessionRepository = workoutSessionRepository;
-        this.workoutSessionMapper = workoutSessionMapper;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public List<WorkoutSessionDto> getAllWorkoutSessions() {
-        return workoutSessionRepository.findAll()
-                .stream()
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<WorkoutSession> sessions = workoutSessionRepository.findAllByUserUsername(username);
+
+        return sessions.stream()
                 .map(workoutSessionMapper::toDto)
                 .toList();
     }
@@ -40,10 +44,15 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
             throw new IllegalArgumentException("Workout session name cannot be empty!");
         }
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         WorkoutSession createdWorkoutSession = workoutSessionRepository.save(new WorkoutSession(
                 null,
                 workoutSessionDto.name(),
-                null
+                null,
+                user
         ));
 
         return workoutSessionMapper.toDto(createdWorkoutSession);
