@@ -44,4 +44,4 @@ server:
   address: 0.0.0.0
 
 repkit:
-  logout-success-url: https://repkit.vercel.app
+  logout-success-url: https://repkit.vercel.app/login
