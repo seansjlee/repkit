@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signUp } from '../api/userApi';
 
 const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,6 +20,15 @@ const SignUpPage: React.FC = () => {
     }
 
     setSubmitting(true);
+
+    try {
+      await signUp(username, password);
+      navigate('/login');
+    } catch (error) {
+      setError('Sign up failed. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

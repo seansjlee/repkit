@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../api/userApi';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -8,10 +9,19 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+
+    try {
+      await login(username, password);
+      navigate('/workout-sessions');
+    } catch (error) {
+      setError('Login failed. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
