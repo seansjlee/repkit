@@ -24,7 +24,7 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${repkit.logout-success-url}")
+    @Value("${repkit.logout-success-url:https://repkit.vercel.app/login}")
     private String logoutSuccessUrl;
 
     @Bean
