@@ -15,7 +15,6 @@ export const login = async (username: string, password: string) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    withCredentials: true,
   });
 
   return response.data;
