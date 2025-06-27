@@ -42,6 +42,11 @@ spring:
 server:
   port: ${PORT:8080}
   address: 0.0.0.0
+  servlet:
+    session:
+      cookie:
+        same-site: None
+        secure: true
 
 repkit:
   logout-success-url: https://repkit.vercel.app/login
