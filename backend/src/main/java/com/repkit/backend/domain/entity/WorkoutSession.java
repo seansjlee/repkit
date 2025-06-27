@@ -1,9 +1,7 @@
 package com.repkit.backend.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +9,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "workout_sessions")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WorkoutSession {
 
     @Id
@@ -30,4 +28,10 @@ public class WorkoutSession {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Builder
+    public WorkoutSession(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
 }

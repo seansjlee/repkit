@@ -48,12 +48,12 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        WorkoutSession createdWorkoutSession = workoutSessionRepository.save(new WorkoutSession(
-                null,
-                workoutSessionDto.name(),
-                null,
-                user
-        ));
+        WorkoutSession createdWorkoutSession = workoutSessionRepository.save(
+                WorkoutSession.builder()
+                .name(workoutSessionDto.name())
+                .user(user)
+                .build()
+        );
 
         return workoutSessionMapper.toDto(createdWorkoutSession);
     }

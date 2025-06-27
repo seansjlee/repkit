@@ -20,14 +20,10 @@ public class WorkoutSessionMapperImpl implements WorkoutSessionMapper {
 
     @Override
     public WorkoutSession fromDto(WorkoutSessionDto workoutSessionDto, User user) {
-        return new WorkoutSession(
-                workoutSessionDto.id(),
-                workoutSessionDto.name(),
-                Optional.ofNullable(workoutSessionDto.exercises())
-                        .map(exercises -> exercises.stream().map(exerciseMapper::fromDto).toList())
-                        .orElse(null),
-                user
-        );
+        return WorkoutSession.builder()
+                .name(workoutSessionDto.name())
+                .user(user)
+                .build();
     }
 
     @Override
