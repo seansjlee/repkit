@@ -58,10 +58,12 @@ public class WebSecurityConfig {
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/login")
                         .successHandler((request, response, authentication) -> {
-                                response.setStatus(HttpServletResponse.SC_OK);
+                            System.out.println("Login success: " + authentication.getName());
+                            response.setStatus(HttpServletResponse.SC_OK);
                         })
                         .failureHandler((request, response, exception) -> {
-                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                            System.out.println("Login failed " + exception.getMessage());
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                         })
                         .permitAll()
                 )
