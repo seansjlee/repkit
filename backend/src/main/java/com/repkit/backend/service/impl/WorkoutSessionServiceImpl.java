@@ -30,6 +30,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<WorkoutSession> sessions = workoutSessionRepository.findAllByUserUsername(username);
 
+        if (sessions == null) {
+            return List.of();
+        }
+
         return sessions.stream()
                 .map(workoutSessionMapper::toDto)
                 .toList();
