@@ -20,17 +20,20 @@ const WorkoutSessionListPage: React.FC = () => {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="relative w-full max-w-xl">
-        <div className="absolute top-0 right-0">
-          <button
-            onClick={handleLogout}
-            className="px-3 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
+        <div className="flex flex-col items-center mb-6 sm:grid sm:grid-cols-[1fr_2fr_1fr] sm:items-center">
+          <div className="hidden sm:block"></div>
+          <h1 className="mb-4 text-3xl font-bold text-center sm:mb-0">
+            Workout Sessions
+          </h1>
+          <div className="flex justify-center sm:justify-end">
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1 text-sm font-medium text-white bg-red-500 rounded hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
         </div>
-        <h1 className="mb-6 text-3xl font-bold text-center">
-          Workout Sessions
-        </h1>
 
         <div className="flex justify-center mb-6">
           <Link
