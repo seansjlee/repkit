@@ -22,6 +22,7 @@ export const login = async (username: string, password: string) => {
 
 export const logout = async () => {
   const response = await axios.post('/logout');
+  localStorage.removeItem('token');
 
   return response.data;
 };

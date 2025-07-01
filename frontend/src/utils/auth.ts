@@ -8,7 +8,3 @@ export const isLoggedIn = async () => {
     return false;
   }
 };
-
-export const logout = () => {
-  localStorage.removeItem('token');
-};
