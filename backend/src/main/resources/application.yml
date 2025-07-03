@@ -18,7 +18,10 @@ spring:
       enabled: true
 
 repkit:
-  logout-success-url: http://localhost:5173/login
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION}
 
 ---
 
@@ -50,4 +53,7 @@ server:
         secure: true
 
 repkit:
-  logout-success-url: https://repkit.vercel.app/login
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION}
