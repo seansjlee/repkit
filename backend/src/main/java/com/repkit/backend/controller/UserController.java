@@ -1,6 +1,9 @@
 package com.repkit.backend.controller;
 
+import com.repkit.backend.domain.entity.User;
+import com.repkit.backend.dto.ApiResponseDto;
 import com.repkit.backend.dto.UserDto;
+import com.repkit.backend.dto.UserInfoDto;
 import com.repkit.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,29 +24,30 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/api/user")
-    public ResponseEntity<Void> signUp(@RequestBody UserDto userDto) {
-        userService.saveUser(userDto);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/api/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(
-                request,
-                response,
-                SecurityContextHolder.getContext().getAuthentication()
-        );
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponseDto<Void>> signUp(@RequestBody UserDto userDto) {
+        try {
+            userService.saveUser(userDto);
+            return ResponseEntity.ok(ApiResponseDto.success("User registered successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponseDto.error("Registration failed: " + e.getMessage()));
+        }
     }
 
     @GetMapping("/api/user/me")
-    public ResponseEntity<UserDto> getCurrentUser(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
+    public ResponseEntity<ApiResponseDto<UserInfoDto>> getCurrentUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401)
+                    .body(ApiResponseDto.error("User not autenticated"));
         }
 
-        return ResponseEntity.ok(new UserDto(authentication.getName(), ""));
+        try {
+            User user = userService.findByUsername(authentication.getName());
+            UserInfoDto userInfo = new UserInfoDto(user.getId(), user.getUsername());
+            return ResponseEntity.ok(ApiResponseDto.success(userInfo));
+        } catch (Exception e) {
+            return ResponseEntity.status(404)
+                    .body(ApiResponseDto.error("User not found"));
+        }
     }
 }
