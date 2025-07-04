@@ -43,19 +43,19 @@ const ExerciseTimerPage: React.FC = () => {
   }, [phase]);
 
   const handleFinishSet = () => {
-    setPhase('rest');
-    setIsRunning(true);
-    setRestKey((prev) => prev + 1);
+    if (currentSetIndex + 1 === exercise?.exerciseSets?.length) {
+      setPhase('done');
+    } else {
+      setPhase('rest');
+      setIsRunning(true);
+      setRestKey((prev) => prev + 1);
+    }
   };
 
   const handleRestComplete = () => {
-    if (currentSetIndex + 1 < (exercise?.exerciseSets?.length || 0)) {
-      setCurrentSetIndex((prev) => prev + 1);
-      setPhase('set');
-      setIsRunning(true);
-    } else {
-      setPhase('done');
-    }
+    setCurrentSetIndex((prev) => prev + 1);
+    setPhase('set');
+    setIsRunning(true);
   };
 
   const handlePrevious = () => {
