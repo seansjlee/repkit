@@ -15,7 +15,13 @@ const RequireAuth = () => {
     check();
   }, []);
 
-  if (!authChecked) return null; // or a spinner
+  if (!authChecked) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   return authenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
