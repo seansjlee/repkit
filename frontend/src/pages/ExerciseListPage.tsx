@@ -28,12 +28,18 @@ const ExerciseListPage: React.FC = () => {
 
   if (isLoadingSession) {
     return (
-      <p className="mt-10 text-center text-gray-500">Loading session...</p>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-500 ">Loading session...</div>
+      </div>
     );
   }
 
   if (!session) {
-    return <p className="mt-10 text-center text-red-500">Session not found.</p>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-500 ">Session not found.</div>
+      </div>
+    );
   }
 
   const toggleExpand = (exerciseId: string) => {

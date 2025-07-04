@@ -124,7 +124,11 @@ const ExerciseFormPage: React.FC = () => {
   };
 
   if (isLoadingExercise) {
-    return <p className="mt-10 text-center text-gray-500">Loading...</p>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-500 ">Loading...</div>
+      </div>
+    );
   }
 
   return (

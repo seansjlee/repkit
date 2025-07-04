@@ -16,7 +16,7 @@ const RedirectIfLoggedIn = () => {
   if (!checked) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Loading...</div>
+        <div className="text-gray-500 ">Loading...</div>
       </div>
     );
   }
