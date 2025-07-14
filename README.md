@@ -12,10 +12,10 @@ Repkit is a sleek and intuitive web application designed to help you organise an
 - Responsive UI optimised for desktop and mobile
 - Secure user-specific data access
 
-## Teck Stack
+## Tech Stack
 
 **Frontend**
-- React (Typescript)
+- React (TypeScript)
 - Vite
 - Tailwind CSS
 - Axios for API calls
