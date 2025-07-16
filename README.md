@@ -1,6 +1,6 @@
 # Repkit
 
-**Design your workout toolkit**
+_**your reps, your kit, your way**_
 
 Repkit is a full-stack web application designed to help you organise and track your workout sessions effortlessly. Create new workout sessions, give them custom names, and easily add exercises. For every exercise, a smart timer is automatically generated based on the sets, reps, and rest time you define. Stay focused, consistent, and in control throughout your workouts.
 
