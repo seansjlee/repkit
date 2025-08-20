@@ -1,9 +1,10 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Pencil } from 'lucide-react';
 import { getWorkoutSession } from '../api/workoutSessionApi';
 import { getExercises } from '../api/exerciseApi';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import LinkButton from '../components/LinkButton';
 
 const ExerciseListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -67,14 +68,9 @@ const ExerciseListPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="flex justify-center mb-6">
-          <Link
-            to={`/workout-sessions/${sessionId}/exercises/new`}
-            className="px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700"
-          >
-            Add Exercise
-          </Link>
-        </div>
+        <LinkButton to={`/workout-sessions/${sessionId}/exercises/new`}>
+          Add Exercise
+        </LinkButton>
 
         {isLoadingExercises ? (
           <p className="text-center text-gray-500">Loading exercises...</p>

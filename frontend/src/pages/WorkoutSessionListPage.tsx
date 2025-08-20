@@ -1,8 +1,9 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import type { WorkoutSession } from '../types';
 import { getWorkoutSessions } from '../api/workoutSessionApi';
 import { logout } from '../api/userApi';
+import LinkButton from '../components/LinkButton';
 
 const WorkoutSessionListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,14 +36,9 @@ const WorkoutSessionListPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-center mb-6">
-          <Link
-            to="/workout-sessions/new"
-            className="px-4 py-2 font-semibold text-white transition bg-blue-600 rounded shadow-md hover:bg-blue-700"
-          >
-            Create New Workout Session
-          </Link>
-        </div>
+        <LinkButton to="/workout-sessions/new">
+          Create New Workout Session
+        </LinkButton>
 
         {isLoading ? (
           <p className="text-center text-gray-500">Loading sessions...</p>
