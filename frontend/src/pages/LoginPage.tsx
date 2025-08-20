@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/userApi';
+import RepkitLogo from '../assets/repkit.png';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +28,9 @@ const LoginPage: React.FC = () => {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="w-full max-w-md">
-        <h1 className="mb-6 text-3xl font-bold text-center">Login</h1>
+        <div className="flex justify-center mb-6">
+          <img src={RepkitLogo} alt="Repkit Logo" className="w-56 sm:w-72" />
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
