@@ -8,6 +8,7 @@ import {
 } from '../api/workoutSessionApi';
 import { ArrowLeft } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import Input from '../components/Input';
 
 const WorkoutSessionFormPage: React.FC = () => {
   const navigate = useNavigate();
@@ -113,13 +114,12 @@ const WorkoutSessionFormPage: React.FC = () => {
             <label htmlFor="name" className="block mb-1 font-medium">
               Session Name
             </label>
-            <input
+            <Input
               id="name"
               type="text"
-              className="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={sessionName}
               onChange={(e) => setSessionName(e.target.value)}
-              required
+              required={true}
             />
           </div>
 
